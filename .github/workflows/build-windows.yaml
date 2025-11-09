@@ -2,8 +2,7 @@ name: Build betterfpk (Windows)
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -14,9 +13,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup MSBuild (adds msbuild to PATH)
+        uses: microsoft/setup-msbuild@v1
+
       - name: Build solution with MSBuild
-        run: |
-          msbuild betterfpk.sln /p:Configuration=Release /p:Platform=x64 /p:OutDir=build\Release\x64\ /m
+        shell: cmd
+        run: msbuild betterfpk.sln /p:Configuration=Release /p:Platform=x64 /p:OutDir=build\Release\x64\ /m
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
