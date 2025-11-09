@@ -1,0 +1,25 @@
+name: Build betterfpk (Windows)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build solution with MSBuild
+        run: |
+          msbuild betterfpk.sln /p:Configuration=Release /p:Platform=x64 /p:OutDir=build\Release\x64\ /m
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: betterfpk-exe
+          path: build\Release\x64\betterfpk.exe
